@@ -1,13 +1,25 @@
 package com.damidu.cofeemasters
 
+import android.app.Application
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 
-class  DataManager{
+class  DataManager(app : Application) : AndroidViewModel(app){
 
-    private var menu: List<Category> by mutableStateOf(listOf())
+    var menu: List<Category> by mutableStateOf(listOf())
     private var cart: List<ItemInCart> by mutableStateOf(listOf())
+
+
+    fun fetchMenuData(): Unit {
+
+        viewModelScope.launch {
+           menu =  API.menuService.fetchMenu()
+        }
+    }
 
     fun cartAdd(product: Product): Unit {
         var found = false

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -21,26 +22,27 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.damidu.cofeemasters.DataManager
 import com.damidu.cofeemasters.Product
 import com.damidu.cofeemasters.R
 import com.damidu.cofeemasters.ui.theme.Alternative1
-import com.damidu.cofeemasters.ui.theme.Alternative2
 import com.damidu.cofeemasters.ui.theme.CardBackground
-import com.damidu.cofeemasters.ui.theme.OnPrimary
 
-@Preview
 @Composable
-fun MenuPage() {
+fun MenuPage(dataManager: DataManager) {
     LazyColumn {
-        items(10) {
-            Card(
-                modifier = Modifier
-                    .background(CardBackground)
-                    .padding(16.dp)
-            ) {
-                ProductItem(product = Product(1, "Black Coffee", 2.0, ""), onAdd = {
-                    println(it)
-                })
+        items (dataManager.menu) { it ->
+            Text(it.name)
+            it.products.forEach{
+                Card(
+                    modifier = Modifier
+                        .background(CardBackground)
+                        .padding(16.dp)
+                ) {
+                    ProductItem(product = it, onAdd = {
+                        dataManager.cartAdd(it)
+                    })
+                }
             }
         }
     }
