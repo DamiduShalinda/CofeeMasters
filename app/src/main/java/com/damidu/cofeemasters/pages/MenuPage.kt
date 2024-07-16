@@ -22,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.damidu.cofeemasters.DataManager
 import com.damidu.cofeemasters.Product
 import com.damidu.cofeemasters.R
@@ -32,7 +33,9 @@ import com.damidu.cofeemasters.ui.theme.CardBackground
 fun MenuPage(dataManager: DataManager) {
     LazyColumn {
         items (dataManager.menu) { it ->
-            Text(it.name)
+            Text(it.name ,
+                modifier =  Modifier
+                    .padding(10.dp , 20.dp , 10.dp , 10.dp))
             it.products.forEach{
                 Card(
                     modifier = Modifier
@@ -60,8 +63,8 @@ fun ProductItem(product: Product, onAdd: (Product)->Unit) {
             .background(Color.White)
     ) {
 
-        Image(
-            painter = painterResource(id = R.drawable.black_coffee),
+        AsyncImage(
+            model = product.imageUrl,
             contentDescription = "Image for ${product.name}",
             contentScale = ContentScale.FillWidth,
             modifier = Modifier

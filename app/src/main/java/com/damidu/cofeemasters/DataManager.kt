@@ -13,11 +13,18 @@ class  DataManager(app : Application) : AndroidViewModel(app){
     var menu: List<Category> by mutableStateOf(listOf())
     private var cart: List<ItemInCart> by mutableStateOf(listOf())
 
+    init {
+        fetchMenuData()
+    }
 
-    fun fetchMenuData(): Unit {
+    private fun fetchMenuData(): Unit {
 
-        viewModelScope.launch {
-           menu =  API.menuService.fetchMenu()
+        try {
+            viewModelScope.launch {
+                menu =  API.menuService.fetchMenu()
+            }
+        } catch (ex : Exception){
+            println(ex.message)
         }
     }
 
